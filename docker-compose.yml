@@ -1,0 +1,7 @@
+version: "3"
+
+services:
+  golang_rest_api:
+    build: .
+    ports:
+      - "8000:8000"
