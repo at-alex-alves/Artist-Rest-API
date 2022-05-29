@@ -1,0 +1,28 @@
+[
+    {
+        "Id": "1",
+        "FirstName": "David",
+        "LastName": "Gilmour",
+        "MostFamousWork": {
+            "Name": "Comfortably Numb - The Wall",
+            "Year": "1979"
+        },
+        "Birthplace": {
+            "City": "Cambridge",
+            "Country": "England"
+        }
+    },
+    {
+        "Id": "2",
+        "FirstName": "Antonio",
+        "LastName": "Vivaldi",
+        "MostFamousWork": {
+            "Name": "The Four Seasons",
+            "Year": "1723"
+        },
+        "Birthplace": {
+            "City": "Venice",
+            "Country": "Italy"
+        }
+    }
+]

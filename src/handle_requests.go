@@ -4,68 +4,24 @@ import (
 	"encoding/json"
 	"net/http"
 	"strings"
+
+	"github.com/at-alex-alves/Artist-Rest-API/src/models"
 )
 
-type artWork struct {
-	Name string `json:"name,omitempty"`
-	Year string `json:"country,omitempty"`
-}
-
-type birthplace struct {
-	City    string `json:"city,omitempty"`
-	Country string `json:"country,omitempty"`
-}
-
-type artist struct {
-	Id             string      `json:"id,omitempty"`
-	FirstName      string      `json:"firstName,omitempty"`
-	LastName       string      `json:"lastName,omitempty"`
-	MostFamousWork artWork    `json:"mostFamousWork,omitempty"`
-	Birthplace     birthplace `json:"birthplace,omitempty"`
-}
-
-var allArtists []artist
-
-func main() {
-	allArtists = append(allArtists, artist{
-		Id:        "1",
-		FirstName: "David",
-		LastName:  "Gilmour",
-		MostFamousWork: artWork{
-			Name: "Comfortably Numb - The Wall",
-			Year: "1979",
-		},
-		Birthplace: birthplace{
-			City:    "Cambridge",
-			Country: "England",
-		},
-	})
-
-	allArtists = append(allArtists, artist{
-		Id:        "2",
-		FirstName: "Antonio",
-		LastName:  "Vivaldi",
-		MostFamousWork: artWork{
-			Name: "The Four Seasons",
-			Year: "1723",
-		},
-		Birthplace: birthplace{
-			City:    "Venice",
-			Country: "Italy",
-		},
-	})
+// handleRequests executes tasks based on the type of request and the passed data.
+func handleRequests(allArtists []models.Artist) {
 
 	// Handles requests that do not need specific artist Id.
 	http.HandleFunc("/artist", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 
-		// Gets all artists stored in the variable "allArtists"
+		// Gets all artists stored in the variable "allArtists".
 		case "GET":
 			json.NewEncoder(w).Encode(allArtists)
 
-		// Creates a new artist
+		// Creates a new artist.
 		case "POST":
-			var artist artist
+			var artist models.Artist
 
 			if err := json.NewDecoder(r.Body).Decode(&artist); err != nil {
 				http.Error(w, err.Error(), http.StatusBadRequest)
@@ -76,6 +32,7 @@ func main() {
 
 			json.NewEncoder(w).Encode(allArtists)
 
+		// Requests different than GET and POST are not allowed.
 		default:
 			w.WriteHeader(http.StatusMethodNotAllowed)
 			w.Write([]byte("Method not allowed!"))
@@ -104,7 +61,7 @@ func main() {
 				}
 			}
 
-			json.NewEncoder(w).Encode(&artist{})
+			json.NewEncoder(w).Encode(&models.Artist{})
 
 		// Deletes the specified artist
 		case "DELETE":
@@ -117,15 +74,11 @@ func main() {
 				json.NewEncoder(w).Encode(allArtists)
 			}
 
+		// Requests different than GET and DELETE are not allowed.
 		default:
 			w.WriteHeader(http.StatusMethodNotAllowed)
 			w.Write([]byte("Method not allowed!"))
 			return
 		}
 	})
-
-	// Starts the server.
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		panic(err)
-	}
 }

@@ -4,4 +4,4 @@ services:
   artist_rest_api:
     build: .
     ports:
-      - "8000:8000"
+      - "8080:8080"
